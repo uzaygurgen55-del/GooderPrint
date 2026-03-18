@@ -18,7 +18,7 @@ You can install directly from GitHub:
 
 ```bash
 
-pip install git+https://github.com/yourusername/GooderPrint.git
+pip install git+https://github.com/uzaygurgen55-del/GooderPrint.git
 
 ```
 
