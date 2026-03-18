@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "GooderPrint"
+version = "0.2.1"
+description = "It makes printing jobs professional."
+readme = "README.md"
+requires-python = ">=3.6"
+dependencies = ["colorama>=0.4.6"]
+
+[tool.setuptools.packages.find]
+where = ["."]
