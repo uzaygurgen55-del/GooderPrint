@@ -1,44 +1,58 @@
 import io
+import sys
+from colorama import Fore, Style, init
 
-RESET = "\033[0m"
-WARNING_COLOR = "\033[33m"
-ERROR_COLOR = "\033[31m"
-SUCCESS_COLOR = "\033[32m"
-DEBUG_COLOR = "\033[90m"
+init(autoreset=True)
+
+
+COLORS = {
+    "warn": Fore.YELLOW,
+    "error": Fore.RED,
+    "success": Fore.GREEN,
+    "debug": Fore.LIGHTBLACK_EX,
+    "normal": ""
+}
+
+
+ENABLE_COLOR = True
+
 
 def _build_message(*objects, sep=' ', end='\n'):
     buffer = io.StringIO()
     print(*objects, sep=sep, end=end, file=buffer)
     return buffer.getvalue().rstrip("\n")
 
-def warn(*objects, sep=' ', end='\n'):
+
+def _log(level, *objects, sep=' ', end='\n', file=sys.stdout, flush=False):
     msg = _build_message(*objects, sep=sep, end=end)
-    print(WARNING_COLOR + msg + RESET, end=end)
+
+    if ENABLE_COLOR and COLORS[level]:
+        output = f"{COLORS[level]}{msg}{Style.RESET_ALL}"
+    else:
+        output = msg
+
     return msg
 
-def error(*objects, sep=' ', end='\n'):
-    msg = _build_message(*objects, sep=sep, end=end)
-    print(ERROR_COLOR + msg + RESET, end=end)
-    return msg
+def warn(*objects, **kwargs):
+    return _log("warn", *objects, **kwargs)
 
-def success(*objects, sep=' ', end='\n'):
-    msg = _build_message(*objects, sep=sep, end=end)
-    print(SUCCESS_COLOR + msg + RESET, end=end)
-    return msg
 
-def debug(*objects, sep=' ', end='\n'):
-    msg = _build_message(*objects, sep=sep, end=end)
-    print(DEBUG_COLOR + msg + RESET, end=end)
-    return msg
+def error(*objects, **kwargs):
+    print("error", *objects, **kwargs)
 
-def raise_warning(*objects, exc_type=UserWarning, sep=' ', end='\n'):
-    msg = _build_message(*objects, sep=sep, end=end)
+
+def success(*objects, **kwargs):
+    print("success", *objects, **kwargs)
+
+
+def debug(*objects, **kwargs):
+    print("debug", *objects, **kwargs)
+
+
+def normal(*objects, **kwargs):
+    print("normal", *objects, **kwargs)
+
+
+def print_raise(*objects, exc_type=Exception, sep=' ', end='\n', file=sys.stdout, flush=False):
+    msg = _log("error", *objects, sep=sep, end=end, file=file, flush=flush)
     raise exc_type(msg)
-
-def raise_error(*objects, exc_type=Exception, sep=' ', end='\n'):
-    msg = _build_message(*objects, sep=sep, end=end)
-    raise exc_type(msg)
-
-def normal(*objects, sep=' ', end='\n'):
-    msg = _build_message(*objects, sep=sep, end=end)
-    print(msg)
