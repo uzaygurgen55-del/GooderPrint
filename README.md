@@ -68,9 +68,11 @@ Requirements:
 
 
 
-\* `Python 3.6+`
+\* Python 3.6+: `winget install python & python --version`
 
-\* `colorama >= 0.4.6`
+\* colorama >= 0.4.6: `pip install colorama==(version >= 0.4.6)`
+
+\* Git.Git: `winget install Git.Git`
 
 
 
